@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panel · SERVICRUZ</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d7a47">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a class="brand" href="./"><i aria-hidden="true"></i>SERVICRUZ</a>
+  <div style="display:flex;gap:8px">
+    <a class="btn" href="./">Ver la web</a>
+    <button class="btn" type="button" id="logout" hidden>Salir</button>
+  </div>
+</div></div>
+
+<!-- Inicio de sesión (solo con base de datos conectada) -->
+<form class="panel login" id="loginBox" hidden>
+  <h1>Panel</h1>
+  <p class="meta" style="margin:0">Entra con el correo y la contraseña que creaste en Supabase.</p>
+  <div><label class="lbl" for="lEmail">Correo</label><input id="lEmail" type="email" autocomplete="username" required></div>
+  <div><label class="lbl" for="lPass">Contraseña</label><input id="lPass" type="password" autocomplete="current-password" required></div>
+  <button class="btn primary" type="submit">Entrar</button>
+</form>
+
+<main class="wrap" id="app" hidden>
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px">
+    <div>
+      <h1 style="font-family:var(--f-display);font-weight:800;font-size:clamp(26px,4vw,36px);margin:0;letter-spacing:-.02em">Mis llamadas</h1>
+      <p class="meta" style="margin:4px 0 0">Llama, marca cómo te fue y quita a quienes no quieran aparecer. Solo los <b>Inscritos</b> salen en la web.</p>
+    </div>
+    <div class="tally" id="tally" aria-label="Filtrar por estado"></div>
+  </div>
+  <div class="banner" id="demo" hidden>Modo demo: los cambios se guardan solo en este navegador. Conecta Supabase (ver README) para guardarlos de verdad.</div>
+
+  <section class="panel" id="solBox" hidden>
+    <details open>
+      <summary>Solicitudes nuevas de técnicos (<span id="solN" class="num">0</span>)</summary>
+      <div id="solList"></div>
+    </details>
+  </section>
+
+  <div class="main">
+    <section class="panel mapbox" aria-label="Mapa">
+      <div class="maptools">
+        <div class="grow"><label class="lbl" for="barrio">Mi ubicación</label><select id="barrio"></select></div>
+        <button class="btn" id="tapBtn" type="button">Tocar el mapa</button>
+      </div>
+      <div style="position:relative">
+        <svg class="map" id="map" role="img" aria-label="Mapa de anillos de Santa Cruz"></svg>
+        <div class="zoom">
+          <button type="button" id="zin" aria-label="Acercar">+</button>
+          <button type="button" id="zout" aria-label="Alejar">−</button>
+          <button type="button" id="zreset" aria-label="Ver todo" style="font-size:13px">⟲</button>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <div class="side">
+      <section class="panel filters">
+        <div><label class="lbl" for="fCat">Rubro</label><select id="fCat"></select></div>
+        <div><label class="lbl" for="fZona">Zona</label>
+          <select id="fZona"><option value="all">Todas</option><option value="in">1er al 4to anillo</option><option value="out">6to al 8vo anillo</option></select></div>
+        <div><label class="lbl" for="fKm">Hasta <span id="kmOut" class="num">sin límite</span></label><input type="range" id="fKm" min="1" max="16" step="0.5" value="16"></div>
+        <div><label class="lbl" for="fQ">Buscar</label><input id="fQ" type="search" placeholder="Nombre o barrio"></div>
+      </section>
+
+      <section class="panel">
+        <div class="listhead">
+          <h2><span id="count" class="num">0</span> negocios, del más cercano</h2>
+          <button class="btn" id="csvBtn" type="button">Exportar CSV</button>
+        </div>
+        <div id="rows"><div class="empty">Cargando…</div></div>
+      </section>
+
+      <section class="panel">
+        <details id="addBox">
+          <summary>Agregar un negocio</summary>
+          <form class="form" id="addForm" style="padding:0 12px 12px">
+            <div class="full"><label class="lbl" for="aNombre">Nombre</label><input id="aNombre" required maxlength="80"></div>
+            <div><label class="lbl" for="aCat">Rubro</label><select id="aCat"></select></div>
+            <div><label class="lbl" for="aTel">Teléfono / WhatsApp</label><input id="aTel" inputmode="tel" placeholder="7xxxxxxx"></div>
+            <div><label class="lbl" for="aEstado">Estado</label><select id="aEstado"></select></div>
+            <div class="full"><label class="lbl" for="aCoord">Ubicación (lat, lng de Google Maps)</label><input id="aCoord" placeholder="-17.7834, -63.1821"></div>
+            <div class="full" style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn" type="button" id="aPick">Marcar en el mapa</button>
+              <button class="btn primary" type="submit">Guardar negocio</button>
+            </div>
+            <p class="note full" style="margin:0">En Google Maps, mantén el dedo sobre el local y copia los números de arriba. El anillo y el barrio se calculan solos.</p>
+          </form>
+        </details>
+      </section>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SERVICRUZ · Técnicos cerca de ti en Santa Cruz</title>
+<meta name="description" content="Plomeros, electricistas, técnicos de aire acondicionado y más en Santa Cruz de la Sierra. Encuentra el más cercano y escríbele por WhatsApp.">
+<meta name="theme-color" content="#0d7a47">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a class="brand" href="./"><i aria-hidden="true"></i>SERVICRUZ</a>
+  <a class="btn" href="#unete">Soy técnico</a>
+</div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Santa Cruz de la Sierra · del 1er al 8vo anillo</p>
+    <h1>¿Qué necesitas arreglar hoy?</h1>
+    <p>Plomeros, electricistas, técnicos de aire y más, cerca de ti. Escríbeles directo por WhatsApp, sin intermediarios.</p>
+  </section>
+
+  <div class="cats" id="cats" aria-label="Elegir servicio"></div>
+
+  <div class="where">
+    <div>
+      <label class="lbl" for="barrio">¿Dónde estás?</label>
+      <select id="barrio"></select>
+    </div>
+    <button class="btn" type="button" id="gps">Usar mi ubicación</button>
+  </div>
+
+  <div class="banner" id="demo" hidden>Modo demo: estos negocios son de ejemplo. Cuando conectes la base de datos, aquí solo saldrán los técnicos inscritos.</div>
+  <p class="meta" id="count"></p>
+  <div class="grid" id="grid"><div class="empty">Buscando técnicos…</div></div>
+
+  <section class="panel join" id="unete">
+    <h2>¿Eres técnico? Aparece en SERVICRUZ</h2>
+    <p class="meta">Déjanos tus datos y te llamamos para darte de alta. Los clientes de tu zona te escribirán directo a tu WhatsApp.</p>
+    <form class="form" id="joinForm">
+      <div class="full"><label class="lbl" for="jNombre">Nombre del negocio o tu nombre</label><input id="jNombre" required maxlength="80"></div>
+      <div><label class="lbl" for="jCat">Rubro</label><select id="jCat"></select></div>
+      <div><label class="lbl" for="jTel">WhatsApp</label><input id="jTel" required inputmode="tel" placeholder="7xxxxxxx" maxlength="20"></div>
+      <div class="full"><label class="lbl" for="jBarrio">Barrio o zona donde trabajas</label><input id="jBarrio" maxlength="80" placeholder="Ej: Plan 3000, Equipetrol…"></div>
+      <div class="full"><button class="btn primary" type="submit">Quiero aparecer</button></div>
+    </form>
+    <p class="meta" id="joinWa" hidden></p>
+  </section>
+
+  <footer class="foot">SERVICRUZ · Santa Cruz, Bolivia · <a href="panel.html">Panel</a></footer>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/app.js"></script>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));</script>
+</body>
+</html>
